@@ -1,5 +1,6 @@
 // My First Crypto
 import * as CryptoJS from 'crypto-js';
+import {broadcastLatest} from './p2p';
 
 class Block {
     public index: number;
@@ -49,3 +50,73 @@ const generateNextBlock = (blockData: string) => {
     return newBlock;
 
 }
+
+const addBlock = (newBlock: Block) => {
+    if (isValidNewBlock(newBlock, getLatestBlock())) {
+        blockchain.push(newBlock);
+    }
+}
+
+const isValidNewBlock = (newBlock: Block, previousBlock: Block): boolean => {
+    if (!isValidBlockStructure(newBlock)) {
+        console.log("Invalid Structure");
+        return false;
+    }
+
+    if (previousBlock.index + 1 !== newBlock.index) {
+        console.log("Invalid Index");
+        return false;
+    }
+
+    else if (newBlock.previousHash != previousBlock.hash) {
+        console.log("Invalid Previous Hash");
+        return false;
+    }
+
+    else if (calculateHashForBlock(newBlock) !== newBlock.hash) {
+        console.log("Invalid Hash");
+        return false;
+    }
+    return true;
+}
+
+const isValidBlockStructure = (block: Block): boolean => {
+    return typeof block.index === 'number'
+        && typeof block.hash === 'string'
+        && typeof block.previousHash === 'string'
+        && typeof block.timestamp === 'number'
+        && typeof block.data === 'string';
+};
+
+const isValidChain = (blockchainToValidate : Block[]): boolean => {
+    if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(genesisBlock)) {
+        return false;
+    }
+
+    for (let i = 1; i < blockchainToValidate.length; i++) {
+        if (!isValidNewBlock(blockchainToValidate[i], blockchainToValidate[i - 1])) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
+const addBlockToChain = (block: Block): boolean => {
+    if (isValidNewBlock(block, getLatestBlock())) {
+        blockchain.push(block);
+        return true;
+    }
+    return false;
+};
+
+const replaceChain = (newBlocks: Block[]) => {
+    if (isValidChain(newBlocks) && newBlocks.length > getBlockchain().length) {
+        blockchain = newBlocks;
+        broadcastLatest();
+    } else {
+        console.log("Recieved blockchain invalid");
+    }
+}
+
+export {Block, getBlockchain, getLatestBlock, generateNextBlock, isValidBlockStructure, replaceChain, addBlockToChain};
