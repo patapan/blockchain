@@ -108,8 +108,8 @@ const initErrorHandler = (ws: WebSocket) => {
         sockets.splice(sockets.indexOf(myWs), 1);
     }
 
-    ws.on('close', closeConnection(ws));
-    ws.on('error', closeConnection(ws));
+    ws.on('close', () => closeConnection(ws));
+    ws.on('error', () => closeConnection(ws));
 }
 
 
@@ -119,7 +119,7 @@ const handleBlockchainResponse = (recievedBlocks: Block[]) => {
         return;
     }
 
-    const latestBlockRecieved: Block = recievedBlocks[recievedBlocks.length-1];
+    const latestBlockRecieved: Block = recievedBlocks[recievedBlocks.length - 1];
 
     if (!isValidBlockStructure(latestBlockRecieved)) {
         console.log("block structure is invalid");
