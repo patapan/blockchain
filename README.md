@@ -1,4 +1,4 @@
-# Cryptocurrency & Blockchain
+# Blockchain
 A proof of concept 
 
 This project has been undertaken as part of a course instructed by Lauri Hartikka.
