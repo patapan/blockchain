@@ -1,8 +1,6 @@
 # Blockchain
 A proof of concept 
 
-This project has been undertaken as part of a course instructed by Lauri Hartikka.
-
 
 Currently functions as generic block chain. WebSockets are used for p2p communication and HTTP is used for user control.
 
