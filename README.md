@@ -1,8 +1,8 @@
 # Blockchain
-A proof of concept 
+A proof of concept implementing a block chain data structure.
 
 
-Currently functions as generic block chain. WebSockets are used for p2p communication and HTTP is used for user control.
+This chain currently functions as generic, networking enabled chain of data. WebSockets are used for p2p communication and HTTP is used for user control.
 
 
 ##### Get blockchain
